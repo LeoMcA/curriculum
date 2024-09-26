@@ -25,6 +25,12 @@ jobs:
         run: |
           ./pdf/build.sh
 
+      - name: Set release name
+        run: |
+          echo "RELEASE_NAME=`date -u '+%Y-%m-%d'`" >> "$GITHUB_ENV"
+
       - uses: ncipollo/release-action@v1
         with:
           artifacts: pdf/MDN-Curriculum.pdf
+          commit: ${{ github.sha }}
+          tag: ${{ env.RELEASE_NAME }}
