@@ -4,9 +4,7 @@ on:
   push:
     branches:
       - main
-
-permissions:
-  contents: write
+      - pdf-test
 
 jobs:
   build:
@@ -24,16 +22,17 @@ jobs:
         run: |
           ./pdf/build.sh
 
-      - name: Set release dates
+      - name: Create release
+        permissions:
+          contents: write
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "REVIEW_DATE=`cat LAST_MAJOR_REVIEW.txt`" >> "$GITHUB_ENV"
-          echo "GENERATED_DATE=`date -u '+%Y-%m-%d'`" >> "$GITHUB_ENV"
-
-      - uses: ncipollo/release-action@v1
-        with:
-          artifacts: pdf/MDN-Curriculum.pdf
-          commit: ${{ github.sha }}
-          tag: release-${{ github.sha }}
-          name: ${{ env.GENERATED_DATE }}
-          body: |
-            PDF generated: ${{ env.GENERATED_DATE }} | Last major curriculum review: ${{ env.REVIEW_DATE }}
+          REVIEW_DATE="`cat LAST_MAJOR_REVIEW.txt`"
+          GENERATED_DATE=`date -u '+%Y-%m-%d'`
+          gh release create release-${{ github.sha }} \
+            --notes "PDF generated: ${{ env.GENERATED_DATE }} | Last major curriculum review: ${{ env.REVIEW_DATE }}" \
+            --target ${{ github.sha }} \
+            --title ${{ env.GENERATED_DATE }} \
+            pdf/MDN-Curriculum.pdf
+            
