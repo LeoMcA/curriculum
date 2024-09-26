@@ -1,0 +1,39 @@
+name: Build and release PDF
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo apt-get install pandoc texlive-latex-base texlive-xetex fonts-inter
+
+      - name: Build PDF
+        run: |
+          ./pdf/build.sh
+
+      - name: Set release dates
+        run: |
+          echo "REVIEW_DATE=`cat LAST_MAJOR_REVIEW.txt`" >> "$GITHUB_ENV"
+          echo "GENERATED_DATE=`date -u '+%Y-%m-%d'`" >> "$GITHUB_ENV"
+
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: pdf/MDN-Curriculum.pdf
+          commit: ${{ github.sha }}
+          tag: release-${{ github.sha }}
+          name: ${{ env.GENERATED_DATE }}
+          body: |
+            PDF generated: ${{ env.GENERATED_DATE }} | Last major curriculum review: ${{ env.REVIEW_DATE }}
