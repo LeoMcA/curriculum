@@ -16,7 +16,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install build dependencies
-        env: DEBIAN_FRONTEND=noninteractive
+        env:
+          DEBIAN_FRONTEND: noninteractive
         run: |
           apt-get install pandoc texlive-latex-base texlive-xetex fonts-inter
 
