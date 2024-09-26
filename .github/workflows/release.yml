@@ -1,0 +1,29 @@
+name: Build and release PDF
+
+on:
+  push:
+    branches:
+      - main
+      - pdf-test
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        env: DEBIAN_FRONTEND=noninteractive
+        run: |
+          apt-get install pandoc texlive-latex-base texlive-xetex fonts-inter
+
+      - name: Build PDF
+        run: |
+          ./pdf/build.sh
+
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: pdf/MDN-Curriculum.pdf
