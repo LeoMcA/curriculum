@@ -34,6 +34,6 @@ jobs:
         with:
           artifacts: pdf/MDN-Curriculum.pdf
           commit: ${{ github.sha }}
-          tag: ${{ github.sha }}
+          tag: release-${{ github.sha }}
           body: |
             Last major curriculum review: ${{ env.MAJOR_DATE }}. PDF generated: ${{ env.MINOR_DATE }}.
