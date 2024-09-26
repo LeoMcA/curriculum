@@ -27,13 +27,14 @@ jobs:
 
       - name: Set release dates
         run: |
-          echo "MAJOR_DATE=`cat LAST_MAJOR_REVIEW.txt`" >> "$GITHUB_ENV"
-          echo "MINOR_DATE=`date -u '+%Y-%m-%d'`" >> "$GITHUB_ENV"
+          echo "REVIEW_DATE=`cat LAST_MAJOR_REVIEW.txt`" >> "$GITHUB_ENV"
+          echo "GENERATED_DATE=`date -u '+%Y-%m-%d'`" >> "$GITHUB_ENV"
 
       - uses: ncipollo/release-action@v1
         with:
           artifacts: pdf/MDN-Curriculum.pdf
           commit: ${{ github.sha }}
           tag: release-${{ github.sha }}
+          name: ${{ env.GENERATED_DATE }}
           body: |
-            Last major curriculum review: ${{ env.MAJOR_DATE }}. PDF generated: ${{ env.MINOR_DATE }}.
+            PDF generated: ${{ env.GENERATED_DATE }} | Last major curriculum review: ${{ env.REVIEW_DATE }}
