@@ -6,6 +6,9 @@ on:
       - main
       - pdf-test
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,8 +26,6 @@ jobs:
           ./pdf/build.sh
 
       - name: Create release
-        permissions:
-          contents: write
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
