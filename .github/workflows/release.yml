@@ -33,4 +33,3 @@ jobs:
         with:
           artifacts: pdf/MDN-Curriculum.pdf
           commit: ${{ github.sha }}
-          tag: ${{ env.RELEASE_NAME }}
