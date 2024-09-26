@@ -32,8 +32,8 @@ jobs:
           REVIEW_DATE="`cat LAST_MAJOR_REVIEW.txt`"
           GENERATED_DATE=`date -u '+%Y-%m-%d'`
           gh release create release-${{ github.sha }} \
-            --notes "PDF generated: ${{ env.GENERATED_DATE }} | Last major curriculum review: ${{ env.REVIEW_DATE }}" \
+            --notes "PDF generated: $GENERATED_DATE | Last major curriculum review: $REVIEW_DATE" \
             --target ${{ github.sha }} \
-            --title ${{ env.GENERATED_DATE }} \
+            --title $GENERATED_DATE \
             pdf/MDN-Curriculum.pdf
             
