@@ -23,15 +23,15 @@ jobs:
       - name: Build PDF
         run: |
           ./pdf/build.sh
+          echo "GENERATED_DATE=$GENERATED_DATE" >> "$GITHUB_ENV"
+          echo "REVIEW_DATE=$REVIEW_DATE" >> "$GITHUB_ENV"
 
       - name: Create release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          REVIEW_DATE="`cat LAST_MAJOR_REVIEW.txt`"
-          GENERATED_DATE=`date -u '+%Y-%m-%d'`
           gh release create release-${{ github.sha }} \
-            --notes "PDF generated: $GENERATED_DATE | Last major curriculum review: $REVIEW_DATE" \
+            --notes "PDF generated: $GENERATED_DATE\nLast major curriculum review: $REVIEW_DATE" \
             --target ${{ github.sha }} \
             --title $GENERATED_DATE \
             pdf/MDN-Curriculum.pdf
