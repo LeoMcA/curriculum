@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - pdf-test
 
 permissions:
   contents: write
