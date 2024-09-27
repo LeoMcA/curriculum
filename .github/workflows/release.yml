@@ -32,7 +32,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create release-${{ github.sha }} \
-            --notes "PDF generated: $GENERATED_DATE\nLast major curriculum review: $REVIEW_DATE" \
+            --notes "PDF generated: $GENERATED_DATE; Last major curriculum review: $REVIEW_DATE" \
             --target ${{ github.sha }} \
             --title $GENERATED_DATE \
             pdf/MDN-Curriculum.pdf
